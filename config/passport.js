@@ -1,8 +1,10 @@
-var passport = require("passport-local"),
-    LocalStrategy = require('passport-local').Strategy();
+var passport = require("passport"),
+    LocalStrategy = require('passport-local').Strategy,
+    User = require('../models/user');
 
 
-//serialize user    
+
+//serialize user
 passport.serializeUser(function (user, done){
   done(null, user._id);
 });
@@ -31,7 +33,7 @@ passport.use("local-login", new LocalStrategy({
           return  done(null, false, req.flash('loginMessage', 'Oops! Wrong password'))
         }
 
-        return done (null, user)
+        return done (null, user);
      });
 }) );
 

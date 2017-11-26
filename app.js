@@ -9,7 +9,8 @@ var session = require('express-session')
 var flash = require('express-flash')
 var ejs   = require('ejs');
 var ejs_mate = require('ejs-mate');
-var MongoStore = require('connect-mongo')(session)
+var MongoStore = require('connect-mongo')(session);
+var passport = require('passport');
 
 
 var secret = require('./config/secret')
@@ -50,8 +51,8 @@ app.use(session({
 }));
 
 
-// app.use(passport.initialize());
-// app.use(passport.session());
+app.use(passport.initialize());
+app.use(passport.session());
 
 // passport.use(User.createStrategy());
 // passport.use(new LocalStrategy(User.authenticate()));
