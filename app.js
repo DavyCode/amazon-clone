@@ -1,13 +1,19 @@
 var express = require('express');
-var path = require('path');
+var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var path = require('path');
+// var passport = require('passport'),
+    // LocalStrategy = require('passport-local'),
+    // methodOverride = require('method-override'),
+    // passportLocalMongoose = require('passport-local-mongoose');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+var ejs   = require('ejs');
+var ejs_mate = require('ejs-mate');
 
 //require models
-var User = require('./models/user')
+var User = require('./models/user');
 
 //require routes
 var index = require('./routes/index');
@@ -24,15 +30,37 @@ const db = mongoose.connect("mongodb://127.0.0.1:27017/Amazon_clone", function(e
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
+app.engine('ejs', ejs_mate)
 app.set('view engine', 'ejs');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+
+// app.use(passport.initialize());
+// app.use(passport.session());
+
+// passport.use(User.createStrategy());
+// passport.use(new LocalStrategy(User.authenticate()));
+// passport.serializeUser(User.serializeUser());
+// passport.deserializeUser(User.deserializeUser());
+
+
+// middleware
+app.use((req, res, next) => {
+    // res.locals.currentUser = req.user;
+    // res.locals.error = req.flash('error');
+    // res.locals.success = req.flash('success');
+    next();
+});
+
+
+
 
 app.use('/', index);
 app.use('/users', users);

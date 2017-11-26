@@ -1,13 +1,13 @@
 var express = require('express');
 var router = express.Router();
 
-var User = require('../models/user')
+var User = require('../models/user');
 
 
 
 /* GET users listing. */
-router.get('/register', function(req, res, next) {
-  // res.send('');
+router.post('/register', function(req, res, next) {
+  // res.send('hi');
   var user = new User();
 
   user.profile.name = req.body.name;
@@ -15,7 +15,8 @@ router.get('/register', function(req, res, next) {
   user.email = req.body.email;
 
   user.save(function (err){
-     (err)? next(err): res.json('Successfully created new user')
+     if(err) return next(err);
+     res.json('Successfully created new user')
   })
 });
 
