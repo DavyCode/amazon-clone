@@ -1,17 +1,20 @@
+import { Mongos } from '../../../AppData/Local/Microsoft/TypeScript/2.6/node_modules/@types/mongodb';
+
 var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var path = require('path');
-// var passport = require('passport'),
-    // LocalStrategy = require('passport-local'),
-    // methodOverride = require('method-override'),
-    // passportLocalMongoose = require('passport-local-mongoose');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
+var session = require('express-session')
+var flash = require('express-flash')
 var ejs   = require('ejs');
 var ejs_mate = require('ejs-mate');
+var MongoStore = require('connect-mongo')(session )
 
+
+var secret = require('./config/secret')
 //require models
 var User = require('./models/user');
 
@@ -23,7 +26,7 @@ var app = express();
 
 
 // Connect to database
-const db = mongoose.connect("mongodb://127.0.0.1:27017/Amazon_clone", function(err){
+const db = mongoose.connect(secret.database, function(err){
   (err)? console.log(err): console.log("Build something Amazing!!!");
 });
 
@@ -38,8 +41,15 @@ app.set('view engine', 'ejs');
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
-app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(cookieParser());
+app.use(session({
+    secret: secret.secretKey,
+    resave: true,
+    saveUninitialized: true,
+    store : new MongoStore({url : secret.database, autoReconnect : true})
+}));
 
 
 // app.use(passport.initialize());
@@ -50,14 +60,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 // passport.serializeUser(User.serializeUser());
 // passport.deserializeUser(User.deserializeUser());
 
-
+app.use(flash());
 // middleware
-app.use((req, res, next) => {
+// app.use((req, res, next) => {
     // res.locals.currentUser = req.user;
-    // res.locals.error = req.flash('error');
-    // res.locals.success = req.flash('success');
-    next();
-});
+//     res.locals.error = req.flash('error');
+//     res.locals.success = req.flash('success');
+//     next();
+// });
 
 
 
