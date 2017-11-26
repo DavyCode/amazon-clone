@@ -1,5 +1,3 @@
-import { Mongos } from '../../../AppData/Local/Microsoft/TypeScript/2.6/node_modules/@types/mongodb';
-
 var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
@@ -11,7 +9,7 @@ var session = require('express-session')
 var flash = require('express-flash')
 var ejs   = require('ejs');
 var ejs_mate = require('ejs-mate');
-var MongoStore = require('connect-mongo')(session )
+var MongoStore = require('connect-mongo')(session)
 
 
 var secret = require('./config/secret')
