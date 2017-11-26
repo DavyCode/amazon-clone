@@ -2,24 +2,17 @@ var passport = require("passport-local"),
     LocalStrategy = require('passport-local').Strategy();
 
 
-// app.use(passport.initialize());
-// app.use(passport.session());
-
-// passport.use(User.createStrategy());
-
-
-// passport.use(new LocalStrategy(User.authenticate()));
-
+//serialize user    
 passport.serializeUser(function (user, done){
   done(null, user._id);
 });
 
+//deserialize user
 passport.deserializeUser(function(id, done){
    User.findById(id, function(err, user){
        done(err, user);
    });
 });
-
 
 //Middleware
 passport.use("local-login", new LocalStrategy({
