@@ -62,4 +62,16 @@ router.post('/register', function(req, res, next) {
   }
 });
 
+
+
+
+// LOGOUT ROUTE
+router.get('/logout', (req, res) => {
+  req.logout();
+  req.flash('success', "Goodbye")
+  res.redirect('/')
+});
+
+
+
 module.exports = router;
