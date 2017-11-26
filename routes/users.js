@@ -52,8 +52,11 @@ router.post('/register', function(req, res, next) {
       }
       user.save(function (err, user){
            if(err) return next(err);
-          //  req.flash('success', 'Welcome'+ user.name + 'Amazon clone shop well' );
-           res.redirect('/')
+
+           req.logIn(user, function(err){
+            if(err) return next(err);
+            res.redirect('/profile');
+           });
         });
     })
   }else{
